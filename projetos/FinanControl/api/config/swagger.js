@@ -23,7 +23,7 @@ const documentacao = {
                     200: {
                         description: "Dados obtidos com sucesso!",
                         content: {
-                            "apllication/json": {
+                            "application/json": {
                                 schema: {
                                     type: "array",
                                     items: { $ref: '#/components/schemas/Listar_Usuarios' }

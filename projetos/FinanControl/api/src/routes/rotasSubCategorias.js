@@ -25,6 +25,12 @@ router.get('/subcategorias', async (req, res) => {
 router.post('/subcategorias', async (req, res) => {
     const { nome, ativo, id_categoria } = req.body;
     try {
+        // Verificar se categoria existe (evita violação FK)
+        const verificarCategoria = await BD.query(`SELECT * FROM categorias WHERE id_categoria = $1`, [id_categoria]);
+        if (verificarCategoria.rows.length === 0) {
+            return res.status(400).json({ message: 'Categoria não existe. Informe um id_categoria válido.' });
+        }
+
         const comando = `INSERT INTO subcategorias(nome, ativo, id_categoria) VALUES($1, $2, $3)`
         const valores = [nome, ativo, id_categoria];
 
@@ -53,9 +59,14 @@ router.put('/subcategorias/:id_subcategoria', async (req, res) => {
         if (verificarSubcategoria.rows.length === 0) {
             return res.status(404).json({ message: 'Subcategoria não encontrada' })
         }
-        // Atualiza todos os campos da tabela(PUT Substituição completa)
-        const comando = `UPDATE subcategorias SET nome = $1, ativo = $2, id_categoria = $3 WHERE
-        id_subcategoria = $4`;
+        // Verifica se a categoria pai existe antes de atualizar
+        const verificarCategoria = await BD.query(`SELECT * FROM categorias WHERE id_categoria = $1`, [id_categoria]);
+        if (verificarCategoria.rows.length === 0) {
+            return res.status(400).json({ message: 'Categoria não existe. Informe um id_categoria válido.' });
+        }
+
+        // Atualiza todos os campos da tabela (PUT substituição completa)
+        const comando = `UPDATE subcategorias SET nome = $1, ativo = $2, id_categoria = $3 WHERE id_subcategoria = $4`;
         const valores = [nome, ativo, id_categoria, id_subcategoria];
         await BD.query(comando, valores);
 
@@ -127,7 +138,7 @@ router.delete('/subcategorias/:id_subcategoria', async (req, res) => {
         await BD.query(comando, [id_subcategoria])
         return res.status(200).json({ message: "Subcategoria removida com sucesso" })
     } catch (error) {
-        console.error('Erro ao remover subcategoria', error.message)
+        console.error('Erro ao remover subCategoria', error.message)
         return res.status(500).json({ message: "Erro interno do servidor" + error.message })
     }
 })
