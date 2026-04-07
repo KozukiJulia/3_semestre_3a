@@ -23,7 +23,7 @@ const documentacao = {
                     200: {
                         description: "Dados obtidos com sucesso!",
                         content: {
-                            "application/json": {
+                            "apllication/json": {
                                 schema: {
                                     type: "array",
                                     items: { $ref: '#/components/schemas/Listar_Usuarios' }
@@ -304,6 +304,7 @@ const documentacao = {
 
                 }
             },
+
         },
 
         "/subcategorias": {
@@ -431,6 +432,7 @@ const documentacao = {
 
                 }
             },
+
         },
 
         "/transacoes": {
@@ -505,53 +507,6 @@ const documentacao = {
                                 tipo: "D",
                                 id_subcategoria: 1,
                                 id_categoria: 1
-                            }
-                        }
-                    }
-                },
-                responses: {
-                    200: {
-                        description: "Transação atualizada com sucesso!"
-                    },
-                    404: {
-                        description: "Transação não encontrada",
-                        content: {
-                            "application/json": {
-                                example: { message: "Transação não encontrada" }
-                            }
-                        }
-                    },
-                    500: {
-                        description: "Erro interno no servidor"
-                    }
-
-                }
-
-            },
-            patch: {
-                tags: ['Transações'],
-                summary: 'Atualizar parcialmente os dados da transação',
-                description: 'Atualiza apenas os campos enviados de uma transação existente',
-                parameters: [
-                    {
-                        name: "id_transacao",
-                        in: "path",
-                        required: true,
-                        description: "ID da transação a ser atualizada",
-                        schema: {
-                            type: 'integer',
-                            example: 1
-                        }
-                    }
-                ],
-                requestBody: {
-                    required: true,
-                    content: {
-                        "application/json": {
-                            schema: { $ref: "#/components/schemas/Atualizar_Transacao" },
-                            example: {
-                                valor: 200.00,
-                                descricao: "Compra atualizada"
                             }
                         }
                     }
@@ -732,12 +687,14 @@ const documentacao = {
                     id_transacao: { type: "integer", example: 1 },
                     valor: { type: "number", format: "decimal", example: 150.00 },
                     descricao: { type: "string", example: "Compra de supermercado" },
-                    data_registro: { type: "string", format: "date-time", example: "2023-11-01T10:00:00Z" },
-                    data_vencimento: { type: "string", format: "date", example: "2023-12-01" },
-                    data_pagamento: { type: "string", format: "date", example: "2023-12-01" },
+                    data_vencimento: { type: "string", example: "01/12/2023" },
+                    data_pagamento: { type: "string", example: "01/12/2023" },
+                    data_registro: { type: "string", example: "01/11/2023" },
                     tipo: { type: "string", example: "D" },
-                    id_subcategoria: { type: "integer", example: 1 },
-                    id_categoria: { type: "integer", example: 1 }
+                    categoria: { type: "string", example: "Alimentação" },
+                    subcategoria: { type: "string", example: "Supermercado" },
+                    nome_categoria:{type:"string", example:"Saude"},
+                    nome_subcategoria:{type:"string", example:"ConsultaMédica"}
                 }
             },
             Cadastrar_Transacao: {
@@ -748,6 +705,7 @@ const documentacao = {
                     descricao: { type: "string", example: "Compra de supermercado" },
                     data_vencimento: { type: "string", format: "date", example: "2023-12-01" },
                     data_pagamento: { type: "string", format: "date", example: "2023-12-01" },
+                    data_registro: { type: "string", format: "date", example: "2023-11-01" },
                     tipo: { type: "string", example: "D" },
                     id_subcategoria: { type: "integer", example: 1 },
                     id_categoria: { type: "integer", example: 1 }
@@ -769,6 +727,4 @@ const documentacao = {
         }
     }
 }
-export default documentacao
-
-
+export default documentacao;
