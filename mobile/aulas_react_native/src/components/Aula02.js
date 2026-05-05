@@ -11,12 +11,14 @@ import Logo from "../../assets/icon.png";
 import { useState } from "react";
 import {LinearGradient} from 'expo-linear-gradient';
 import Aula02_Flexbox from "./Aula02_Flexbox";
+import Hr from './Hr'
 
 const Aula02 = () => {
   const [nome, setNome] = useState("");
 
   return (
     <View>
+      <Hr/>
       <Text>-------------------------------------------</Text>
       <Text>Aula 02 - Componentes Básicos</Text>
       <Text>Conhecendo os principais componentes do React Native</Text>
