@@ -50,15 +50,15 @@ const Aula11_Cadastro_Produtos = () => {
                     onChange={(event) => setLinkProduto(event.target.value)} />
                 <input type="text" placeholder="Link da foto" style={estilos.inputs} value={linkImagem}
                     onChange={(event) => setLinkImagem(event.target.value)} />
-                <select  style={estilos.inputs} value={categoria} onChange={(event) => setCategoria(event.target.value)}>
+                <select style={estilos.inputs} value={categoria} onChange={(event) => setCategoria(event.target.value)}>
                     <option value=''>Selecione uma categoria</option>
                     <option value='Eletrônicos'>Eletrônicos</option>
                     <option value='Brinquedos'>Brinquedos</option>
                     <option value='Livros'>Livros</option>
                 </select>
                 <span> <input type="checkbox" checked={freteGratis}
-                    onChange={(event) => setFreteGratis(event.target.value)} />  Frete Grátis </span>
-                <button  style={estilos.botao} onClick={botaoAdicionar}>Adicionar Produto</button>
+                    onChange={(event) => setFreteGratis(event.target.checked)} />  Frete Grátis </span>
+                <button style={estilos.botao} onClick={botaoAdicionar}>Adicionar Produto</button>
 
                 <hr />
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }} >

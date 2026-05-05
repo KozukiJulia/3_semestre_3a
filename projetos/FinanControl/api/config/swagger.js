@@ -23,7 +23,7 @@ const documentacao = {
                     200: {
                         description: "Dados obtidos com sucesso!",
                         content: {
-                            "apllication/json": {
+                            "application/json": {
                                 schema: {
                                     type: "array",
                                     items: { $ref: '#/components/schemas/Listar_Usuarios' }
@@ -566,8 +566,101 @@ const documentacao = {
             },
 
         },
+        "/transacoes/tipo/{tipo}": {
+            get: {
+                tags: ["Transações"],
+                summary: "Listar por tipo(Entrada ou Saida)",
+                parameters: [
+                    {
+                        name: "tipo",
+                        in: "path",
+                        required: true,
+                        description: "Tipo transacao (E = Entrada / S = Saida)",
+                        schema: { type: "string", enum: ["E", "S"], example: "S" }
+                    }
+
+                ],
+                responses: {
+                    200: {
+                        description: "Dados obtidos com sucesso!",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "array",
+                                    items: { $ref: '#/components/schemas/Listar_Transacoes' }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            "/transacoes/periodo": {
+                get: {
+                    tags: ["Transações"],
+                    summary: "Listar transações por período",
+                    parameters: [
+                        {
+                            name: "inicio",
+                            in: "query",
+                            required: true,
+                            description: "Data de início do período",
+                            schema: { type: "string", example: "01-04-2026" }
+                        },
+                        {
+                            name: "fim",
+                            in: "query",
+                            required: true,
+                            description: "Data de fim do período",
+                            schema: {
+                                type: "string", example: "13-04-2026"
+                            }
+                        }
+                    ],
+                    responses: {
+                        200: {
+                            description: "Dados obtidos com sucesso!",
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        type: "array",
+                                        items: { $ref: '#/components/schemas/Listar_Transacoes' }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                post: {
+                    tags: ['Transações'],
+                    summary: 'Cadastrar nova transação',
+                    description: "Recebe valor, descricao, data_vencimento, data_pagamento, tipo, id_subcategoria, id_categoria para cadastrar nova transação",
+                    requestBody: {
+                        required: true,
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    $ref: "#/components/schemas/Cadastrar_Transacao"
+                                }
+                            }
+                        }
+                    },
+                    responses: {
+                        201: {
+                            description: "Transação cadastrada com sucesso!"
+                        },
+                        500: {
+                            description: "Erro interno no servidor"
+                        }
+                    }
+                }
+            },
+        },
+
 
     },
+
+
     components: {
         schemas: {
             Listar_Usuarios: {
@@ -693,8 +786,8 @@ const documentacao = {
                     tipo: { type: "string", example: "D" },
                     categoria: { type: "string", example: "Alimentação" },
                     subcategoria: { type: "string", example: "Supermercado" },
-                    nome_categoria:{type:"string", example:"Saude"},
-                    nome_subcategoria:{type:"string", example:"ConsultaMédica"}
+                    nome_categoria: { type: "string", example: "Saude" },
+                    nome_subcategoria: { type: "string", example: "ConsultaMédica" }
                 }
             },
             Cadastrar_Transacao: {

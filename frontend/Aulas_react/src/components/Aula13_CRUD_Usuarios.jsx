@@ -1,6 +1,22 @@
 import { useEffect, useState } from "react"
 import Aula13_Usuario from "./Aula13_Usuario"
 
+const estilos = {
+    inputs: {
+        padding: "10px",
+        fontSize: "16px",
+    },
+    botao: {
+        backgroundColor: "#e30613",
+        color: "#fff",
+        borderRadius: "5px",
+        fontWeight: "bold",
+        border: "none",
+        padding: "10px",
+        fontSize: "16px",
+    }
+}
+
 const Aula13_CRUD_Usuarios = () => {
     const [listaUsuarios, setListaUsuarios] = useState([])
     const [nome, setNome] = useState('')
@@ -98,27 +114,6 @@ const Aula13_CRUD_Usuarios = () => {
             </div>
         </div>
     )
-}
-
-const estilos = {
-    cadastro: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-    },
-    inputs: {
-        padding: "10px",
-        fontSize: "16px",
-    },
-    botao: {
-        backgroundColor: "#e30613",
-        color: "#fff",
-        borderRadius: "5px",
-        fontWeight: "bold",
-        border: "none",
-        padding: "10px",
-        fontSize: "16px",
-    }
 }
 
 export default Aula13_CRUD_Usuarios

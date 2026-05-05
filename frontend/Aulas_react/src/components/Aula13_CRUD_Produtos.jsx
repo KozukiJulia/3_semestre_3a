@@ -1,6 +1,22 @@
 import { useEffect, useState } from "react"
 import Aula13_Produto from "./Aula13_Produto"
 
+const estilos = {
+    inputs: {
+        padding: "10px",
+        fontSize: "16px",
+    },
+    botao: {
+        backgroundColor: "#e30613",
+        color: "#fff",
+        borderRadius: "5px",
+        fontWeight: "bold",
+        border: "none",
+        padding: "10px",
+        fontSize: "16px",
+    }
+}
+
 const Aula13_CRUD_Produtos = () => {
     const [listaProdutos, setListaProdutos] = useState([])
     const [nome, setNome] = useState('')
@@ -41,7 +57,7 @@ const Aula13_CRUD_Produtos = () => {
             let endpoint = 'http://10.130.42.68:3001/produtos'
             let metodo = 'POST'
 
-            if (editando == true){
+            if (editando == true) {
                 endpoint = `http://10.130.42.68:3001/produtos/${id}`
                 metodo = 'PUT'
             }
@@ -62,7 +78,7 @@ const Aula13_CRUD_Produtos = () => {
             LimparCamposFormularios()
 
         } catch (erro) {
-            console.error ( 'Erro ao adicionar produto', erro.message )
+            console.error('Erro ao adicionar produto', erro.message)
         }
     }
 
@@ -82,11 +98,11 @@ const Aula13_CRUD_Produtos = () => {
             buscarDados()
 
         } catch (erro) {
-            console.error ( 'Erro ao adicionar produto', erro.message )
+            console.error('Erro ao adicionar produto', erro.message)
         }
     }
 
-    function LimparCamposFormularios (){
+    function LimparCamposFormularios() {
         setNome('')
         setPreco('')
         setLinkProduto('')
@@ -109,7 +125,7 @@ const Aula13_CRUD_Produtos = () => {
             setListaProdutos(dados)
 
         } catch (erro) {
-            console.error ('Erro ao carregar os dados', erro.message)
+            console.error('Erro ao carregar os dados', erro.message)
         }
     }
 
@@ -125,20 +141,20 @@ const Aula13_CRUD_Produtos = () => {
                     onChange={(event) => setLinkProduto(event.target.value)} />
                 <input type="text" placeholder="Link da foto" style={estilos.inputs} value={linkImagem}
                     onChange={(event) => setLinkImagem(event.target.value)} />
-                <select  style={estilos.inputs} value={categoria} onChange={(event) => setCategoria(event.target.value)}>
+                <select style={estilos.inputs} value={categoria} onChange={(event) => setCategoria(event.target.value)}>
                     <option value=''>Selecione uma categoria</option>
                     <option value='Eletrônicos'>Eletrônicos</option>
                     <option value='Brinquedos'>Brinquedos</option>
                     <option value='Livros'>Livros</option>
                 </select>
                 <span> <input type="checkbox" checked={freteGratis}
-                    onChange={(event) => setFreteGratis(event.target.value)} />  Frete Grátis </span>
-                <button  style={estilos.botao} onClick={botaoAdicionar}>
-                    { editando == false ? "Adicionar Produto" : "Editar Produto"  } 
+                    onChange={(event) => setFreteGratis(event.target.checked)} />  Frete Grátis </span>
+                <button style={estilos.botao} onClick={botaoAdicionar}>
+                    {editando == false ? "Adicionar Produto" : "Editar Produto"}
                 </button>
                 {
-                    editando == true && 
-                        <button style={estilos.botao} onClick={LimparCamposFormularios}>Cancelar</button>
+                    editando == true &&
+                    <button style={estilos.botao} onClick={LimparCamposFormularios}>Cancelar</button>
                 }
 
                 <hr />
@@ -152,27 +168,6 @@ const Aula13_CRUD_Produtos = () => {
             </div>
         </div>
     )
-}
-
-const estilos = {
-    cadastro: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-    },
-    inputs: {
-        padding: "10px",
-        fontSize: "16px",
-    },
-    botao: {
-        backgroundColor: "#e30613",
-        color: "#fff",
-        borderRadius: "5px",
-        fontWeight: "bold",
-        border: "none",
-        padding: "10px",
-        fontSize: "16px",
-    }
 }
 
 export default Aula13_CRUD_Produtos

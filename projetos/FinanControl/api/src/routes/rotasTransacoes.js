@@ -119,5 +119,132 @@ router.delete('/transacoes/:id_transacao', async (req, res) => {
     }
 })
 
+// listando as transacoes por tipo (Entrada ou saida )
+router.get('/transacoes/tipo/:tipo', async (req, res) => {
+    const { tipo } = req.params;
+    try {
+        if (tipo != 'E' && tipo !== 'S') {
+            return res.status(400).json({ mensagem: 'Tipo invalido. USe E para entrada ou S para saida' })
+        }
+        const query = `SELECT
+                       t.id_transacao,
+                       t.valor,
+                       t.descricao,
+                       TO_CHAR(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
+                       TO_CHAR(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
+                       TO_CHAR(t.data_registro, 'DD/MM/YYYY') AS data_registro,
+                       t.tipo,
+                       c.nome AS categoria,
+                       s.nome AS subcategoria
+                    FROM transacoes t
+                    LEFT JOIN categorias c ON t.id_categoria = c.id_categoria
+                    LEFT JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
+                    WHERE t.tipo =$1
+                    ORDER BY t.data_registro DESC`;
+
+        const transacoes = await BD.query(query, [tipo]);
+        return res.status(200).json(transacoes.rows);
+
+    } catch (error) {
+        console.error('Erro ao listar transacao', error.message)
+        return res.status(500).json({ message: "Erro interno do servidor" + error.message })
+    }
+})
+
+router.get('/transacoes/periodo', async (req, res) => {
+    const { inicio, fim } = req.query;
+
+    try {
+        if (!inicio || !fim) {
+            return res.status(400).json({ mensagem: 'Informe as datas de inicio e fim do periodo' })
+        }
+        const query = `SELECT
+                       t.id_transacao,
+                       t.valor,
+                       t.descricao,
+                       TO_CHAR(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
+                       TO_CHAR(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
+                       TO_CHAR(t.data_registro, 'DD/MM/YYYY') AS data_registro,
+                       t.tipo,
+                       c.nome AS categoria,
+                       s.nome AS subcategoria
+                    FROM transacoes t
+                    LEFT JOIN categorias c ON t.id_categoria = c.id_categoria
+                    LEFT JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
+                    WHERE t.data_registro BETWEEN  TO_DATE($1, 'DD-MM-YYYY') AND TO_DATE($2, 'DD-MM-YYYY')
+                    ORDER BY t.data_registro DESC`;
+
+        const transacoes = await BD.query(query, [inicio, fim]);
+        return res.status(200).json(transacoes.rows);
+
+    } catch (error) {
+        console.error('Erro ao listar transacao', error.message)
+        return res.status(500).json({ message: "Erro interno do servidor" + error.message })
+    }
+})
+
+
+//busca por categora 
+router.get('/transacoes/categoria/:id_categoria', async (req, res) => {
+    const { id_categoria } = req.params;
+    try {
+        const query = `Select
+        t.id_transacao,
+        t.valor,
+        t.descricao,
+        to_char(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
+        to_char(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
+        to_char(t.data_registro, 'DD/MM/YYYY') As data_registro,
+        t.tipo,
+        c.nome AS categoria,
+        s.nome As subcategoria
+        From transacoes t
+        Left Join categorias c ON t.id_categoria = c.id_categoria
+        Left Join subcategorias s ON t.id_subcategoria = s.id_subcategoria
+        WHERE t.id_categoria = $1
+        ORDER BY t.data_registro DESC`;
+
+        const transacoes = await BD.query(query, [id_categoria]);
+        return res.status(200).json(transacoes.rows);
+
+    } catch (error) {
+        console.error('Erro ao listar transacao', error.message)
+        return res.status(500).json({ mensagem: "Erro interno do servidor" + error.mensagem })
+
+    }
+})
+
+//buscar por subcategoria
+router.get('/transacoes/subcategoria/:id_subcategoria', async (req, res) => {
+    const { id_subcategoria } = req.params;
+    try {
+        const query = `Select
+        t.id_transacao,
+        t.valor,
+        t.descricao,
+        to_char(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
+        to_char(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
+        to_char(t.data_registro, 'DD/MM/YYYY') As data_registro,
+        t.tipo,
+        c.nome AS categoria,
+        s.nome As subcategoria
+        From transacoes t
+        Left Join categorias c ON t.id_categoria = c.id_categoria
+        Left Join subcategorias s ON t.id_subcategoria = s.id_subcategoria
+        WHERE t.id_subcategoria = $1
+        ORDER BY t.data_registro DESC`;
+
+        const transacoes = await BD.query(query, [id_subcategoria]);
+        return res.status(200).json(transacoes.rows);
+
+    } catch (error) {
+        console.error('Erro ao listar transacao', error.message)
+        return res.status(500).json({ mensagem: "Erro interno do servidor" + error.mensagem })
+
+
+    }
+})
+
+
 export default router
 
